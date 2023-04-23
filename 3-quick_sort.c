@@ -14,16 +14,15 @@ void quick_sort(int *array, size_t size)
 {
 	if (array == NULL || size < 2)
 		return;
-	printf("Before the helper call\n");
-	quick_sort_helper(array, 0, size, size);
+	quick_sort_helper(array, 0, size - 1, size);
 }
 
 /**
  * quick_sort_helper - helper function for quick sort
  * @array: array to sort
- * @lo: lower index
- * @hi: higher index
- * @size: total size of the array
+ * @lo: lowest index of the current array
+ * @hi: highest index of the current array
+ * @size: original array size
  */
 void quick_sort_helper(int *array, int lo, int hi, size_t size)
 {
@@ -32,13 +31,8 @@ void quick_sort_helper(int *array, int lo, int hi, size_t size)
 	if (lo < hi)
 	{
 		p = partition(array, lo, hi, size);
-		printf("p: %d\n", p);
-		printf("Before the left call\n");
 		quick_sort_helper(array, lo, p - 1, size);
-		printf("After the left call\n");
-		printf("Before the right call\n");
 		quick_sort_helper(array, p + 1, hi, size);
-		printf("After the right call\n");
 	}
 }
 
@@ -54,31 +48,30 @@ void quick_sort_helper(int *array, int lo, int hi, size_t size)
 int partition(int *array, int lo, int hi, size_t size)
 {
 	int pivot = array[hi];
-	int p_idx = lo - 1, idx;
+	int s_idx = lo - 1;
 
-	idx = lo;
-	while (idx < hi)
+	while (lo < hi)
 	{
-		if (array[idx] <= pivot)
+		if (array[lo] <= pivot)
 		{
-			p_idx++;
-			if (p_idx != idx)
+			s_idx++;
+			if (s_idx != lo)
 			{
-				array[p_idx] ^= array[idx];
-				array[idx] ^= array[p_idx];
-				array[p_idx] ^= array[idx];
+				array[s_idx] ^= array[lo];
+				array[lo] ^= array[s_idx];
+				array[s_idx] ^= array[lo];
 				print_array(array, size);
 			}
 		}
-		idx++;
+		lo++;
 	}
-	if (array[p_idx + 1] > pivot)
+	if (array[s_idx + 1] != array[hi])
 	{
-		array[p_idx + 1] ^= array[hi];
-		array[hi] ^= array[p_idx + 1];
-		array[p_idx + 1] ^= array[hi];
+		array[s_idx + 1] ^= array[hi];
+		array[hi] ^= array[s_idx + 1];
+		array[s_idx + 1] ^= array[hi];
 		print_array(array, size);
 	}
 
-	return (p_idx + 1);
+	return (s_idx + 1);
 }
