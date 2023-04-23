@@ -17,7 +17,7 @@ void shell_sort(int arr[], int n)
 		{
 			value = arr[a];
 			b = a;
-			while (b > gap - 1 && arr[b - gap] >= value)
+			while (b > gap - 1 && arr[b - gap] > value)
 			{
 				arr[b] = arr[b - gap];
 				b = b - gap;
