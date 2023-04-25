@@ -2,7 +2,7 @@
 
 /**
  * shell_sort - sorts an array of integers in ascending order
- * using the Shell sort algorithm, and  the Knuth gap sequence
+ * using the Shell sort algorithm, and the Knuth gap sequence
  * @array: array to be sorted
  * @size: size of the array
  */
@@ -11,6 +11,8 @@ void shell_sort(int *array, size_t size)
 	int value;
 	size_t gap = 1, a, b;
 
+	if (array == NULL || size < 2)
+		return;
 	while (gap < size / 3)
 		gap *= 3 + 1;
 	while (gap > 0)
