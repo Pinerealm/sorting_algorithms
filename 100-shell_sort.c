@@ -1,30 +1,32 @@
 #include "sort.h"
-/**
- * shell_sort - a function that sorts an array of integers in ascending order
- * using the Shell sort algorithm, using the Knuth sequence
- * @arr: array
- * @n: size of array
- */
-void shell_sort(int arr[], int n)
-{
-	int a, b, value, gap = 1;
 
-	while (gap < n / 3)
-		gap = gap * 3 + 1;
+/**
+ * shell_sort - sorts an array of integers in ascending order
+ * using the Shell sort algorithm, and  the Knuth gap sequence
+ * @array: array to be sorted
+ * @size: size of the array
+ */
+void shell_sort(int *array, size_t size)
+{
+	int value;
+	size_t gap = 1, a, b;
+
+	while (gap < size / 3)
+		gap *= 3 + 1;
 	while (gap > 0)
 	{
-		for (a = gap; a < n; a++)
+		for (a = gap; a < size; a++)
 		{
-			value = arr[a];
+			value = array[a];
 			b = a;
-			while (b >= gap && arr[b - gap] > value)
+			while (b >= gap && array[b - gap] > value)
 			{
-				arr[b] = arr[b - gap];
-				b = b - gap;
+				array[b] = array[b - gap];
+				b -= gap;
 			}
-			arr[b] = value;
+			array[b] = value;
 		}
 		gap = (gap - 1) / 3;
-		print_array(arr, n);
+		print_array(array, size);
 	}
 }
