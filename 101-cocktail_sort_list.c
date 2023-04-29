@@ -9,13 +9,10 @@ void swap_nodes(listint_t **list, listint_t *node1, listint_t *node2);
 void cocktail_sort_list(listint_t **list)
 {
 	int swapped = 1;
-	listint_t *tmp, *end;
+	listint_t *tmp;
 
 	if (!list || !*list || !(*list)->next)
 		return;
-	end = *list;
-	while (end->next)
-		end = end->next;
 
 	while (swapped)
 	{
