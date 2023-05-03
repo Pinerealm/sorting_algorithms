@@ -32,11 +32,19 @@ void merge_sort(int *array, size_t size)
  */
 void merge_sort_helper(int *array, int *t_array, size_t start, size_t end)
 {
-	size_t mid = 0;
+	size_t mid = 0, sum;
 
 	if (start < end)
 	{
-		mid = (start + end) / 2;
+		
+		sum = start + end;
+		if (sum % 2 != 0)
+			mid = sum / 2;
+		else if (end - start == 1)
+			mid = start;
+		else
+			mid = (sum - 1) / 2;
+
 		merge_sort_helper(array, t_array, start, mid);
 		merge_sort_helper(array, t_array, mid + 1, end);
 		merge(array, t_array, start, mid, end);
