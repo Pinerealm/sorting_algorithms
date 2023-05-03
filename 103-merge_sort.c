@@ -36,7 +36,6 @@ void merge_sort_helper(int *array, int *t_array, size_t start, size_t end)
 
 	if (start < end)
 	{
-		
 		sum = start + end;
 		if (sum % 2 != 0)
 			mid = sum / 2;
