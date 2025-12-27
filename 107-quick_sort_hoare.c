@@ -5,7 +5,7 @@ static int partition_hoare(int *array, int lo, int hi, size_t size);
 static void quick_sort_rec(int *array, int lo, int hi, size_t size);
 
 /**
- * quick_sort - sorts an array of integers in ascending order using the
+ * quick_sort_hoare - sorts an array of integers in ascending order using the
  * quick sort algorithm and the Hoare partition scheme
  *
  * @array: array to sort
@@ -30,6 +30,7 @@ void quick_sort_rec(int *array, int lo, int hi, size_t size)
 	if (lo < hi)
 	{
 		int p = partition_hoare(array, lo, hi, size);
+
 		quick_sort_rec(array, lo, p, size);
 		quick_sort_rec(array, p + 1, hi, size);
 	}
