@@ -1,7 +1,8 @@
 #include "sort.h"
-#include <stdio.h>
-void quick_sort_helper(int *array, int lo, int hi, size_t size);
-int partition(int *array, int lo, int hi, size_t size);
+
+static void swap_int(int *a, int *b);
+static int partition_lomuto(int *array, int lo, int hi, size_t size);
+static void quick_sort_rec(int *array, int lo, int hi, size_t size);
 
 /**
  * quick_sort - sorts an array of integers in ascending order using the
@@ -14,30 +15,29 @@ void quick_sort(int *array, size_t size)
 {
 	if (array == NULL || size < 2)
 		return;
-	quick_sort_helper(array, 0, size - 1, size);
+	quick_sort_rec(array, 0, size - 1, size);
 }
 
 /**
- * quick_sort_helper - helper function for quick sort
+ * quick_sort_rec - helper function for quick sort
  * @array: array to sort
  * @lo: lowest index of the current array
  * @hi: highest index of the current array
  * @size: original array size
  */
-void quick_sort_helper(int *array, int lo, int hi, size_t size)
+void quick_sort_rec(int *array, int lo, int hi, size_t size)
 {
-	int p;
-
 	if (lo < hi)
 	{
-		p = partition(array, lo, hi, size);
-		quick_sort_helper(array, lo, p - 1, size);
-		quick_sort_helper(array, p + 1, hi, size);
+		int p = partition_lomuto(array, lo, hi, size);
+
+		quick_sort_rec(array, lo, p - 1, size);
+		quick_sort_rec(array, p + 1, hi, size);
 	}
 }
 
 /**
- * partition - partitions the array and returns the pivot index
+ * partition_lomuto - partitions the array and returns the pivot index
  * @array: array to sort
  * @lo: lower index
  * @hi: higher index
@@ -45,7 +45,7 @@ void quick_sort_helper(int *array, int lo, int hi, size_t size)
  *
  * Return: the pivot index
  */
-int partition(int *array, int lo, int hi, size_t size)
+int partition_lomuto(int *array, int lo, int hi, size_t size)
 {
 	int pivot = array[hi];
 	int s_idx = lo - 1;
@@ -57,9 +57,7 @@ int partition(int *array, int lo, int hi, size_t size)
 			s_idx++;
 			if (s_idx != lo)
 			{
-				array[s_idx] ^= array[lo];
-				array[lo] ^= array[s_idx];
-				array[s_idx] ^= array[lo];
+				swap_int(&array[s_idx], &array[lo]);
 				print_array(array, size);
 			}
 		}
@@ -67,11 +65,21 @@ int partition(int *array, int lo, int hi, size_t size)
 	}
 	if (array[s_idx + 1] != array[hi])
 	{
-		array[s_idx + 1] ^= array[hi];
-		array[hi] ^= array[s_idx + 1];
-		array[s_idx + 1] ^= array[hi];
+		swap_int(&array[s_idx + 1], &array[hi]);
 		print_array(array, size);
 	}
 
 	return (s_idx + 1);
+}
+
+/**
+ * swap_int - swaps two integers in place
+ * @a: first integer
+ * @b: second integer
+ */
+void swap_int(int *a, int *b)
+{
+	int temp = *a;
+	*a = *b;
+	*b = temp;
 }
