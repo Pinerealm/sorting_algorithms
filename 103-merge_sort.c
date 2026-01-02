@@ -11,16 +11,16 @@ void merge(int *array, int *t_array, size_t start, size_t mid, size_t end);
  */
 void merge_sort(int *array, size_t size)
 {
-	int *t_array = NULL;
+	int *tmp;
 
 	if (array == NULL || size < 2)
 		return;
-	t_array = malloc(sizeof(int) * size);
-	if (t_array == NULL)
+	tmp = malloc(sizeof(int) * size);
+	if (!tmp)
 		return;
 
-	merge_sort_helper(array, t_array, 0, size - 1);
-	free(t_array);
+	merge_sort_helper(array, tmp, 0, size);
+	free(tmp);
 }
 
 /**
@@ -32,22 +32,15 @@ void merge_sort(int *array, size_t size)
  */
 void merge_sort_helper(int *array, int *t_array, size_t start, size_t end)
 {
-	size_t mid = 0, sum;
+	size_t mid;
 
-	if (start < end)
-	{
-		sum = start + end;
-		if (sum % 2 != 0)
-			mid = sum / 2;
-		else if (end - start == 1)
-			mid = start;
-		else
-			mid = (sum - 1) / 2;
+	if (end - start < 2)
+		return;
+	mid = start + (end - start) / 2;
 
-		merge_sort_helper(array, t_array, start, mid);
-		merge_sort_helper(array, t_array, mid + 1, end);
-		merge(array, t_array, start, mid, end);
-	}
+	merge_sort_helper(array, t_array, start, mid);
+	merge_sort_helper(array, t_array, mid, end);
+	merge(array, t_array, start, mid, end);
 }
 
 /**
@@ -60,14 +53,14 @@ void merge_sort_helper(int *array, int *t_array, size_t start, size_t end)
  */
 void merge(int *array, int *t_array, size_t start, size_t mid, size_t end)
 {
-	size_t i = start, j = mid + 1, k = 0;
+	size_t i = start, j = mid, k = start;
 
 	printf("Merging...\n[left]: ");
-	print_array(array + start, mid - start + 1);
+	print_array(array + start, mid - start);
 	printf("[right]: ");
-	print_array(array + mid + 1, end - mid);
+	print_array(array + mid, end - mid);
 
-	while (i <= mid && j <= end)
+	while (i < mid && j < end)
 	{
 		if (array[i] <= array[j])
 			t_array[k++] = array[i++];
@@ -75,14 +68,14 @@ void merge(int *array, int *t_array, size_t start, size_t mid, size_t end)
 			t_array[k++] = array[j++];
 	}
 
-	while (i <= mid)
+	while (i < mid)
 		t_array[k++] = array[i++];
-	while (j <= end)
+	while (j < end)
 		t_array[k++] = array[j++];
-	for (i = start, k = 0; i <= end; i++, k++)
-		array[i] = t_array[k];
+	for (k = start; k < end; k++)
+		array[k] = t_array[k];
 
 	printf("[Done]: ");
-	print_array(array + start, end - start + 1);
+	print_array(array + start, end - start);
 
 }
